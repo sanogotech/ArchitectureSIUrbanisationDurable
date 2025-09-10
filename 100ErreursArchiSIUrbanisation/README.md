@@ -2,7 +2,7 @@
 ## Cas d’un grand groupe de distribution d’eau et d’électricité en Afrique
 
 Un SI, c’est comme une maison : mal conçu, il devient invivable.  
-Voici **150 erreurs fatales** pour une DSI avec un département Architecture & Urbanisation.
+Voici **200 erreurs fatales** pour une DSI avec un département Architecture & Urbanisation.
 
 ---
 
