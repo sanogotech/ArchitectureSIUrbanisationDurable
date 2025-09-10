@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit DSI - Architecture & Urbanisation SI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --light-bg: #f8f9fa;
+      --dark-bg: #343a40;
+      --success-color: #27ae60;
+      --warning-color: #f39c12;
+    }
+
+    body {
+      background-color: var(--light-bg);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .navbar {
+      background-color: var(--primary-color);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: white;
+    }
+
+    .hero-section {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+      padding: 4rem 0;
+      margin-bottom: 3rem;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .card {
+      border: none;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .card-header {
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 600;
+    }
+
+    .module-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--secondary-color);
+    }
+
+    .btn-primary {
+      background-color: var(--secondary-color);
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: #2980b9;
+    }
+
+    .btn-audit {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    .btn-audit:hover {
+      background-color: #c0392b;
+      color: white;
+    }
+
+    .btn-outline-primary {
+      color: var(--secondary-color);
+      border-color: var(--secondary-color);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    .audit-container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+
+    .process-step {
+      position: relative;
+      padding-left: 30px;
+      margin-bottom: 20px;
+    }
+
+    .process-step:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 20px;
+      height: 20px;
+      background-color: var(--secondary-color);
+      border-radius: 50%;
+    }
+
+    .process-step:after {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 20px;
+      width: 2px;
+      height: 100%;
+      background-color: var(--secondary-color);
+    }
+
+    .process-step:last-child:after {
+      display: none;
+    }
+
+    .data-table {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .data-table th {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .highlight-box {
+      background-color: rgba(52, 152, 219, 0.1);
+      border-left: 4px solid var(--secondary-color);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 0 5px 5px 0;
+    }
+
+    .audit-highlight {
+      background-color: rgba(231, 76, 60, 0.1);
+      border-left: 4px solid var(--accent-color);
+    }
+
+    .linked-modules {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .linked-module {
+      background-color: var(--light-bg);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      color: var(--primary-color);
+      border: 1px solid #ddd;
+    }
+
+    .tab-content {
+      padding: 1.5rem 0;
+    }
+
+    footer {
+      background-color: var(--dark-bg);
+      color: white;
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+
+    .risk-meter {
+      height: 10px;
+      background-color: #e9ecef;
+      border-radius: 5px;
+      margin-bottom: 5px;
+    }
+
+    .risk-meter-fill {
+      height: 100%;
+      border-radius: 5px;
+    }
+
+    .risk-low {
+      background-color: var(--success-color);
+      width: 25%;
+    }
+
+    .risk-medium {
+      background-color: var(--warning-color);
+      width: 50%;
+    }
+
+    .risk-high {
+      background-color: var(--accent-color);
+      width: 75%;
+    }
+
+    .risk-critical {
+      background-color: #8b0000;
+      width: 95%;
+    }
+
+    .error-card {
+      border-left: 4px solid var(--accent-color);
+      margin-bottom: 1rem;
+    }
+
+    .recommendation-card {
+      border-left: 4px solid var(--success-color);
+      margin-bottom: 1rem;
+    }
+
+    /* Animation pour les cartes */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .module-card {
+      animation: fadeIn 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    /* Délai d'animation pour chaque carte */
+    .module-card:nth-child(1) { animation-delay: 0.1s; }
+    .module-card:nth-child(2) { animation-delay: 0.2s; }
+    .module-card:nth-child(3) { animation-delay: 0.3s; }
+    .module-card:nth-child(4) { animation-delay: 0.4s; }
+    .module-card:nth-child(5) { animation-delay: 0.5s; }
+    .module-card:nth-child(6) { animation-delay: 0.6s; }
+    .module-card:nth-child(7) { animation-delay: 0.7s; }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .hero-section {
+        padding: 2rem 0;
+      }
+
+      .module-icon {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-clipboard-data me-2"></i>Audit DSI - Architecture SI
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#audit">Audit</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#erreurs">Erreurs Fatales</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#recommandations">Recommandations</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#simulations">Simulations</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#outils">Outils</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#ressources">Ressources</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero-section">
+    <div class="container text-center">
+      <h1 class="display-4 fw-bold mb-3">200 Erreurs Fatales en Urbanisation & Architecture SI</h1>
+      <p class="lead mb-4">Cas d'un grand groupe de distribution d'eau et d'électricité en Afrique</p>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="#audit" class="btn btn-light btn-lg px-4">Démarrer l'audit</a>
+        <a href="#erreurs" class="btn btn-outline-light btn-lg px-4">Voir les erreurs</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container mb-5">
+    <section class="mb-5">
+      <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+          <h2 class="mb-4">Pourquoi cet audit d'architecture SI ?</h2>
+          <p class="lead">Un SI, c'est comme une maison : mal conçu, il devient invivable. Cet audit identifie les 200 erreurs fatales à éviter pour une DSI avec un département Architecture & Urbanisation.</p>
+          <div class="d-flex justify-content-center mt-4">
+            <div class="px-4 text-center">
+              <i class="bi bi-exclamation-triangle fs-1 text-warning"></i>
+              <p class="mt-2 fw-bold">Risques</p>
+            </div>
+            <div class="px-4 text-center">
+              <i class="bi bi-lightbulb fs-1 text-primary"></i>
+              <p class="mt-2 fw-bold">Recommandations</p>
+            </div>
+            <div class="px-4 text-center">
+              <i class="bi bi-graph-up-arrow fs-1 text-success"></i>
+              <p class="mt-2 fw-bold">Amélioration</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="audit" class="mb-5">
+      <h2 class="text-center mb-4">Évaluation de la DSI</h2>
+      
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-clipboard-check me-2"></i>
+              <h5 class="mb-0">Méthodologie d'audit</h5>
+            </div>
+            <div class="card-body">
+              <p>Notre approche d'évaluation repose sur 7 piliers fondamentaux :</p>
+              <div class="highlight-box">
+                <ul>
+                  <li>Analyse documentaire (schémas directeurs, cartographies)</li>
+                  <li>Entretiens avec les parties prenantes</li>
+                  <li>Évaluation technique de l'existant</li>
+                  <li>Benchmark sectoriel</li>
+                  <li>Analyse des écarts avec les meilleures pratiques</li>
+                  <li>Évaluation des risques et impacts</li>
+                  <li>Élaboration de recommandations actionnables</li>
+                </ul>
+              </div>
+              <button class="btn btn-primary btn-sm mt-3" onclick="showDetails('methodologie')">
+                <i class="bi bi-info-circle me-1"></i>Voir le détail
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-speedometer2 me-2"></i>
+              <h5 class="mb-0">Indicateurs de performance</h5>
+            </div>
+            <div class="card-body">
+              <p>Évaluation du SI selon les critères clés :</p>
+              
+              <div class="mb-3">
+                <p class="mb-1">Alignement stratégique</p>
+                <div class="risk-meter">
+                  <div class="risk-meter-fill risk-high"></div>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <p class="mb-1">Interopérabilité</p>
+                <div class="risk-meter">
+                  <div class="risk-meter-fill risk-critical"></div>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <p class="mb-1">Sécurité</p>
+                <div class="risk-meter">
+                  <div class="risk-meter-fill risk-medium"></div>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <p class="mb-1">Évolutivité</p>
+                <div class="risk-meter">
+                  <div class="risk-meter-fill risk-high"></div>
+                </div>
+              </div>
+              
+              <button class="btn btn-primary btn-sm mt-2" onclick="showDetails('indicateurs')">
+                <i class="bi bi-graph-up me-1"></i>Voir le détail
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              <h5 class="mb-0">Risques identifiés</h5>
+            </div>
+            <div class="card-body">
+              <div class="alert alert-danger">
+                <p class="mb-0"><strong>12 risques critiques</strong> identifiés nécessitant une action immédiate</p>
+              </div>
+              <div class="alert alert-warning">
+                <p class="mb-0"><strong>38 risques élevés</strong> nécessitant un plan d'action à moyen terme</p>
+              </div>
+              <div class="alert alert-info">
+                <p class="mb-0"><strong>25 risques modérés</strong> à surveiller et intégrer dans la roadmap</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-currency-dollar me-2"></i>
+              <h5 class="mb-0">Impact financier</h5>
+            </div>
+            <div class="card-body">
+              <p>Coûts estimés des problèmes identifiés :</p>
+              <div class="audit-highlight highlight-box">
+                <p><strong>Surcoûts annuels :</strong> 2,5M€</p>
+                <p><strong>Coûts de correction :</strong> 4,7M€</p>
+                <p><strong>Risque financier maximal :</strong> 12M€</p>
+              </div>
+              <p>ROI potentiel des corrections : 3,2 ans</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-calendar-range me-2"></i>
+              <h5 class="mb-0">Plan d'action</h5>
+            </div>
+            <div class="card-body">
+              <p>Horizon de mise en œuvre des corrections :</p>
+              <ul>
+                <li><strong>Immédiat (0-3 mois):</strong> 15 actions critiques</li>
+                <li><strong>Court terme (3-6 mois):</strong> 28 actions prioritaires</li>
+                <li><strong>Moyen terme (6-12 mois):</strong> 45 actions importantes</li>
+                <li><strong>Long terme (12+ mois):</strong> 32 actions d'amélioration</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="erreurs" class="mb-5">
+      <h2 class="text-center mb-4">200 Erreurs Fatales à Éviter</h2>
+      
+      <ul class="nav nav-tabs justify-content-center mb-4" id="errorsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="strategie-tab" data-bs-toggle="tab" data-bs-target="#strategie" type="button" role="tab">Stratégie</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="interoperabilite-tab" data-bs-toggle="tab" data-bs-target="#interoperabilite" type="button" role="tab">Interopérabilité</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="infrastructure-tab" data-bs-toggle="tab" data-bs-target="#infrastructure" type="button" role="tab">Infrastructure</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="metier-tab" data-bs-toggle="tab" data-bs-target="#metier" type="button" role="tab">Métier</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="autres-tab" data-bs-toggle="tab" data-bs-target="#autres" type="button" role="tab">Autres</button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="errorsTabContent">
+        <div class="tab-pane fade show active" id="strategie" role="tabpanel">
+          <div class="audit-container">
+            <h3 class="mb-4"><i class="bi bi-gear me-2"></i>Stratégie & Orientation (1–30)</h3>
+            <p>Erreurs liées à la vision, la gouvernance et l'alignement stratégique du SI.</p>
+            
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Erreur</th>
+                    <th>Impact</th>
+                    <th>Criticité</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Absence de schéma directeur SI</td>
+                    <td>Dérives, incohérences</td>
+                    <td><span class="badge bg-danger">Critique</span></td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Ne pas aligner SI avec stratégie métier</td>
+                    <td>SI inutile</td>
+                    <td><span class="badge bg-danger">Critique</span></td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Multiplier applications redondantes</td>
+                    <td>Coûts et chaos</td>
+                    <td><span class="badge bg-warning">Élevée</span></td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>Ignorer urbanisation</td>
+                    <td>SI en "millefeuille"</td>
+                    <td><span class="badge bg-danger">Critique</span></td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>Pas de feuille de route technologique</td>
+                    <td>Obsolescence rapide</td>
+                    <td><span class="badge bg-warning">Élevée</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="d-flex justify-content-center mt-4">
+              <button class="btn btn-primary" onclick="showAllErrors('strategie')">
+                <i class="bi bi-list-ul me-1"></i>Voir les 30 erreurs de stratégie
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="interoperabilite" role="tabpanel">
+          <div class="audit-container">
+            <h3 class="mb-4"><i class="bi bi-hdd-network me-2"></i>Interopérabilité & Intégration (31–50)</h3>
+            <p>Erreurs liées à l'intégration des systèmes et à l'échange de données.</p>
+            
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Erreur</th>
+                    <th>Impact</th>
+                    <th>Criticité</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>31</td>
+                    <td>Pas de stratégie API Management</td>
+                    <td>Silos et duplications</td>
+                    <td><span class="badge bg-warning">Élevée</span></td>
+                  </tr>
+                  <tr>
+                    <td>32</td>
+                    <td>Connecter tout en point-à-point</td>
+                    <td>Spaghetti d'intégrations</td>
+                    <td><span class="badge bg-danger">Critique</span></td>
+                  </tr>
+                  <tr>
+                    <td>33</td>
+                    <td>Ne pas gérer IAM/SSO</td>
+                    <td>Failles de sécurité</td>
+                    <td><span class="badge bg-danger">Critique</span></td>
+                  </tr>
+                  <tr>
+                    <td>34</td>
+                    <td>Ignorer standards d'échange</td>
+                    <td>Complexité inutile</td>
+                    <td><span class="badge bg-warning">Élevée</span></td>
+                  </tr>
+                  <tr>
+                    <td>35</td>
+                    <td>Pas de supervision centralisée</td>
+                    <td>Pannes invisibles</td>
+                    <td><span class="badge bg-warning">Élevée</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="d-flex justify-content-center mt-4">
+              <button class="btn btn-primary" onclick="showAllErrors('interoperabilite')">
+                <i class="bi bi-list-ul me-1"></i>Voir les 20 erreurs d'interopérabilité
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="infrastructure" role="tabpanel">
+          <div class="audit-container">
+            <h3 class="mb-4"><i class="bi bi-server me-2"></i>Fondations & Infrastructure (51–75)</h3>
+            <p>Erreurs liées aux infrastructures techniques, cloud et données.</p>
+            
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Erreur</th>
+                    <th>Impact</th>
+                    <th>Criticité</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>51</td>
+                    <td>Pas d'étude capacité infra</td>
+                    <td>Effondrement</td>
+                    <td><span class="badge bg-danger">Critique</span></td>
+                  </tr>
+                  <tr>
+                    <td>52</td>
+                    <td>Ignorer redondance et PRA/PCA</td>
+                    <td>Coupures prolongées</td>
+                    <td><span class="badge bg-danger">Critique</span></td>
+                  </tr>
+                  <tr>
+                    <td>53</td>
+                    <td>Sous-dimensionner stockage</td>
+                    <td>Explosion bases (HES, MDM)</td>
+                    <td><span class="badge bg-warning">Élevée</span></td>
+                  </tr>
+                  <tr>
+                    <td>54</td>
+                    <td>Pas de gestion donnée temps réel</td>
+                    <td>Pertes opérationnelles</td>
+                    <td><span class="badge bg-warning">Élevée</span></td>
+                  </tr>
+                  <tr>
+                    <td>55</td>
+                    <td>Sous-estimer middleware</td>
+                    <td>Bricolage</td>
+                    <td><span class="badge bg-warning">Élevée</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="d-flex justify-content-center mt-4">
+              <button class="btn btn-primary" onclick="showAllErrors('infrastructure')">
+                <i class="bi bi-list-ul me-1"></i>Voir les 25 erreurs d'infrastructure
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="metier" role="tabpanel">
+          <div class="audit-container">
+            <h3 class="mb-4"><i class="bi bi-person-circle me-2"></i>Fonctionnalité & Ergonomie Métier (76–100)</h3>
+            <p>Erreurs liées à l'expérience utilisateur et aux fonctionnalités métier.</p>
+            
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Erreur</th>
+                    <th>Impact</th>
+                    <th>Criticité</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>76</td>
+                    <td>Multiplication interfaces hétérogènes</td>
+                    <td>Productivité en baisse</td>
+                    <td><span class="badge bg-warning">Élevée</span></td>
+                  </tr>
+                  <tr>
+                    <td>77</td>
+                    <td>Ne pas impliquer métiers dans conception</td>
+                    <td>Rejet SI</td>
+                    <td><span class="badge bg-danger">Critique</span></td>
+                  </tr>
+                  <tr>
+                    <td>78</td>
+                    <td>CRM non intégré avec facturation</td>
+                    <td>Erreurs clients</td>
+                    <td><span class="badge bg-warning">Élevée</span></td>
+                  </tr>
+                  <tr>
+                    <td>79</td>
+                    <td>Pas de mobilité agents terrain</td>
+                    <td>Inefficacité</td>
+                    <td><span class="badge bg-warning">Élevée</span></td>
+                  </tr>
+                  <tr>
+                    <td>80</td>
+                    <td>Pas de portail client self-service</td>
+                    <td>Surcharge call center</td>
+                    <td><span class="badge bg-warning">Élevée</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="d-flex justify-content-center mt-4">
+              <button class="btn btn-primary" onclick="showAllErrors('metier')">
+                <i class="bi bi-list-ul me-1"></i>Voir les 25 erreurs métier
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="autres" role="tabpanel">
+          <div class="audit-container">
+            <h3 class="mb-4"><i class="bi bi-collection me-2"></i>Autres catégories d'erreurs</h3>
+            <p>Erreurs de gouvernance, légales, projets et sécurité.</p>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card mb-3">
+                  <div class="card-header">
+                    <h6 class="mb-0">Gouvernance & Budget (101–115)</h6>
+                  </div>
+                  <div class="card-body">
+                    <p>15 erreurs de gestion budgétaire et gouvernance</p>
+                    <button class="btn btn-sm btn-outline-primary" onclick="showAllErrors('gouvernance')">
+                      Voir les erreurs
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card mb-3">
+                  <div class="card-header">
+                    <h6 class="mb-0">Légal & Réglementaire (116–120)</h6>
+                  </div>
+                  <div class="card-body">
+                    <p>5 erreurs de conformité légale et réglementaire</p>
+                    <button class="btn btn-sm btn-outline-primary" onclick="showAllErrors('legal')">
+                      Voir les erreurs
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card mb-3">
+                  <div class="card-header">
+                    <h6 class="mb-0">Gestion Projets & Ressources (121–135)</h6>
+                  </div>
+                  <div class="card-body">
+                    <p>15 erreurs de gestion de projet et ressources</p>
+                    <button class="btn btn-sm btn-outline-primary" onclick="showAllErrors('projets')">
+                      Voir les erreurs
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card mb-3">
+                  <div class="card-header">
+                    <h6 class="mb-0">Sécurité & Durabilité (136–150)</h6>
+                  </div>
+                  <div class="card-body">
+                    <p>15 erreurs de sécurité et durabilité</p>
+                    <button class="btn btn-sm btn-outline-primary" onclick="showAllErrors('securite')">
+                      Voir les erreurs
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="card mb-3">
+                  <div class="card-header">
+                    <h6 class="mb-0">50 Erreurs Bonus Critiques (151–200)</h6>
+                  </div>
+                  <div class="card-body">
+                    <p>50 erreurs supplémentaires critiques identifiées</p>
+                    <button class="btn btn-sm btn-outline-primary" onclick="showAllErrors('bonus')">
+                      Voir les erreurs
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="recommandations" class="mb-5">
+      <h2 class="text-center mb-4">Recommandations</h2>
+      
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-lightning-charge me-2"></i>
+              <h5 class="mb-0">Actions Immédiates (0-3 mois)</h5>
+            </div>
+            <div class="card-body">
+              <div class="recommendation-card card mb-3">
+                <div class="card-body">
+                  <h6>Élaborer un schéma directeur SI</h6>
+                  <p class="mb-0">Définir une vision claire et alignée avec la stratégie métier</p>
+                </div>
+              </div>
+              <div class="recommendation-card card mb-3">
+                <div class="card-body">
+                  <h6>Mettre en place une gouvernance data</h6>
+                  <p class="mb-0">Nommer un chief data officer et définir les processus de gestion</p>
+                </div>
+              </div>
+              <div class="recommendation-card card mb-3">
+                <div class="card-body">
+                  <h6>Audit de sécurité complet</h6>
+                  <p class="mb-0">Identifier et corriger les vulnérabilités critiques</p>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-sm mt-2" onclick="showDetails('actions-immediates')">
+                <i class="bi bi-list-ul me-1"></i>Voir les 15 actions immédiates
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-kanban me-2"></i>
+              <h5 class="mb-0">Feuille de Route Stratégique</h5>
+            </div>
+            <div class="card-body">
+              <div class="process-step">
+                <h5>Trimestre 1: Fondations</h5>
+                <p>Stratégie SI, gouvernance, sécurité de base</p>
+              </div>
+              <div class="process-step">
+                <h5>Trimestre 2: Modernisation</h5>
+                <p>API Management, cloud, intégration</p>
+              </div>
+              <div class="process-step">
+                <h5>Trimestre 3: Optimisation</h5>
+                <p>Data management, expérience utilisateur</p>
+              </div>
+              <div class="process-step">
+                <h5>Trimestre 4: Innovation</h5>
+                <p>IA, IoT, transformation digitale</p>
+              </div>
+              <button class="btn btn-primary btn-sm mt-2" onclick="showDetails('feuille-route')">
+                <i class="bi bi-calendar-range me-1"></i>Voir le détail
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-shield-check me-2"></i>
+              <h5 class="mb-0">Sécurité & Conformité</h5>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li>Mettre en place une politique IAM centralisée</li>
+                <li>Chiffrement des données sensibles</li>
+                <li>Audit de conformité RGPD</li>
+                <li>Formation sécurité des équipes</li>
+                <li>Mise en place d'un SOC</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-database me-2"></i>
+              <h5 class="mb-0">Architecture & Urbanisation</h5>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li>Définir un référentiel d'urbanisme</li>
+                <li>Cartographie complète du SI existant</li>
+                <li>Standardiser les interfaces (API First)</li>
+                <li>Rationaliser les applications</li>
+                <li>Mettre en place une plateforme d'intégration</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-people me-2"></i>
+              <h5 class="mb-0">Organisation & Compétences</h5>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li>Restructurer l'équipe Architecture SI</li>
+                <li>Recruter des experts cloud et data</li>
+                <li>Former les équipes aux nouvelles technologies</li>
+                <li>Mettre en place une communauté de pratique</li>
+                <li>Définir des parcours de carrière</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="simulations" class="mb-5">
+      <h2 class="text-center mb-4">Simulateur d'Impact</h2>
+      
+      <div class="audit-container">
+        <div class="row">
+          <div class="col-md-6">
+            <h4>Calculateur de ROI</h4>
+            <p>Estimez le retour sur investissement des corrections recommandées</p>
+            
+            <div class="mb-3">
+              <label for="investment" class="form-label">Investissement initial (€)</label>
+              <input type="range" class="form-range" min="100000" max="10000000" step="100000" id="investment" oninput="updateROI()">
+              <div class="d-flex justify-content-between">
+                <small>100 000€</small>
+                <small id="investmentValue">5 000 000€</small>
+                <small>10 000 000€</small>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="timeframe" class="form-label">Période de calcul (années)</label>
+              <select class="form-select" id="timeframe" onchange="updateROI()">
+                <option value="1">1 an</option>
+                <option value="2">2 ans</option>
+                <option value="3" selected>3 ans</option>
+                <option value="5">5 ans</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <h4>Résultats estimés</h4>
+            <div class="card mt-4">
+              <div class="card-body text-center">
+                <h5>Retour sur investissement</h5>
+                <h2 id="roiValue" class="text-success">187%</h2>
+                <p class="mb-1">Gains annuels estimés: <span id="annualGains">2 350 000€</span></p>
+                <p>Délai de retour: <span id="paybackPeriod">2.1 ans</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <h4>Répartition des gains</h4>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body text-center">
+                  <h6>Réduction des coûts</h6>
+                  <h4 class="text-primary">45%</h4>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body text-center">
+                  <h6>Productivité</h6>
+                  <h4 class="text-primary">30%</h4>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body text-center">
+                  <h6>Évitement de risques</h6>
+                  <h4 class="text-primary">15%</h4>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body text-center">
+                  <h6>Nouvelles opportunités</h6>
+                  <h4 class="text-primary">10%</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="outils" class="mb-5">
+      <h2 class="text-center mb-4">Outils & Méthodologies</h2>
+      
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-diagram-3 me-2"></i>
+              <h5 class="mb-0">Cadre d'Architecture</h5>
+            </div>
+            <div class="card-body">
+              <p>Méthodologies et cadres recommandés :</p>
+              <ul>
+                <li>TOGAF 9.2</li>
+                <li>ArchiMate 3.1</li>
+                <li>Zachman Framework</li>
+                <li>Cadre d'urbanisme du SI</li>
+              </ul>
+              <div class="linked-modules">
+                <span class="linked-module">Gouvernance</span>
+                <span class="linked-module">Stratégie</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-tools me-2"></i>
+              <h5 class="mb-0">Outils Logiciels</h5>
+            </div>
+            <div class="card-body">
+              <p>Solutions techniques recommandées :</p>
+              <ul>
+                <li>ERP: SAP S/4HANA</li>
+                <li>CRM: Salesforce</li>
+                <li>MDM: Informatica</li>
+                <li>BI: Tableau, Power BI</li>
+                <li>BPM: Camunda</li>
+              </ul>
+              <div class="linked-modules">
+                <span class="linked-module">Infrastructure</span>
+                <span class="linked-module">Intégration</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-cloud me-2"></i>
+              <h5 class="mb-0">Stratégie Cloud</h5>
+            </div>
+            <div class="card-body">
+              <p>Approche cloud hybride recommandée :</p>
+              <ul>
+                <li>IaaS: AWS, Azure</li>
+                <li>PaaS: Kubernetes, OpenShift</li>
+                <li>SaaS: Solutions métier spécialisées</li>
+                <li>Cloud privé: VMware, OpenStack</li>
+              </ul>
+              <div class="linked-modules">
+                <span class="linked-module">Sécurité</span>
+                <span class="linked-module">Données</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ressources" class="mb-5">
+      <h2 class="text-center mb-4">Ressources & Documentation</h2>
+      
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-file-earmark-text me-2"></i>
+              <h5 class="mb-0">Documents de Référence</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-grid gap-2">
+                <a href="#" class="btn btn-outline-primary text-start">
+                  <i class="bi bi-download me-2"></i>Rapport d'audit complet (PDF)
+                </a>
+                <a href="#" class="btn btn-outline-primary text-start">
+                  <i class="bi bi-download me-2"></i>Présentation executive (PPTX)
+                </a>
+                <a href="#" class="btn btn-outline-primary text-start">
+                  <i class="bi bi-download me-2"></i>Feuille de route détaillée (XLSX)
+                </a>
+                <a href="#" class="btn btn-outline-primary text-start">
+                  <i class="bi bi-download me-2"></i>Cartographie du SI (VSDX)
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+              <i class="bi bi-book me-2"></i>
+              <h5 class="mb-0">Formations Recommandées</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-grid gap-2">
+                <a href="#" class="btn btn-outline-primary text-start">
+                  <i class="bi bi-play-circle me-2"></i>Architecture d'entreprise TOGAF
+                </a>
+                <a href="#" class="btn btn-outline-primary text-start">
+                  <i class="bi bi-play-circle me-2"></i>Gestion de projet Agile
+                </a>
+                <a href="#" class="btn btn-outline-primary text-start">
+                  <i class="bi bi-play-circle me-2"></i>Cybersécurité pour architectes
+                </a>
+                <a href="#" class="btn btn-outline-primary text-start">
+                  <i class="bi bi-play-circle me-2"></i>Cloud et DevOps avancés
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4 mb-md-0">
+          <h5>Audit DSI - Architecture SI</h5>
+          <p>Plateforme d'évaluation et de recommandations pour les Directions des Systèmes d'Information.</p>
+        </div>
+        <div class="col-md-4 mb-4 mb-md-0">
+          <h5>Contact</h5>
+          <p>Email: contact@audit-dsi.com<br>
+          Téléphone: +33 1 23 45 67 89</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Suivez-nous</h5>
+          <div class="d-flex gap-3 fs-4">
+            <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-youtube"></i></a>
+            <a href="#" class="text-white"><i class="bi bi-github"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4 bg-light">
+      <div class="text-center">
+        <p class="mb-0">© 2023 Audit DSI - Tous droits réservés</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Fonction pour mettre à jour le simulateur de ROI
+    function updateROI() {
+      const investment = parseInt(document.getElementById('investment').value);
+      const timeframe = parseInt(document.getElementById('timeframe').value);
+      
+      // Calculs simplifiés pour la démonstration
+      const annualGains = investment * 0.47; // Gains annuels estimés à 47% de l'investissement
+      const totalGains = annualGains * timeframe;
+      const roi = ((totalGains - investment) / investment) * 100;
+      const paybackPeriod = investment / annualGains;
+      
+      // Mise à jour des valeurs affichées
+      document.getElementById('investmentValue').textContent = new Intl.NumberFormat('fr-FR').format(investment) + '€';
+      document.getElementById('roiValue').textContent = Math.round(roi) + '%';
+      document.getElementById('annualGains').textContent = new Intl.NumberFormat('fr-FR').format(Math.round(annualGains)) + '€';
+      document.getElementById('paybackPeriod').textContent = paybackPeriod.toFixed(1) + ' ans';
+    }
+    
+    // Initialiser le simulateur
+    document.addEventListener('DOMContentLoaded', function() {
+      updateROI();
+    });
+    
+    // Fonction pour afficher les détails (simulée)
+    function showDetails(section) {
+      alert('Fonctionnalité en cours de développement. Section: ' + section);
+    }
+    
+    // Fonction pour afficher toutes les erreurs d'une catégorie (simulée)
+    function showAllErrors(category) {
+      alert('Affichage de toutes les erreurs de la catégorie: ' + category);
+    }
+  </script>
+</body>
+</html>
