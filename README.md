@@ -142,6 +142,47 @@ Cette introduction détaille les **enjeux, défis, menaces, risques et opportuni
 
 ---
 
+## 🏅 Top 21 Certifications et Normes pour Gouvernance, Gestion de Projets, Risques et SI
+
+### 1️⃣ Gouvernance et Management IT
+1. **COBIT 2019** – Gouvernance et management des SI  
+2. **ISO 38500** – Gouvernance des technologies de l’information  
+3. **ITIL 4** – Gestion des services IT  
+4. **ISO 20000** – Management des services IT  
+5. **TOGAF 9.2** – Architecture d’entreprise et urbanisation SI  
+
+### 2️⃣ Gestion de Projets & Méthodologies
+6. **PMI-PMP** – Project Management Professional  
+7. **PRINCE2** – Gestion de projet structurée  
+8. **Agile / Scrum Master (CSM)** – Méthodologies agiles  
+9. **PMI-ACP** – Agile Certified Practitioner  
+10. **SAFe** – Scaled Agile Framework pour grands projets  
+
+### 3️⃣ Gestion des Risques
+11. **ISO 31000** – Management du risque  
+12. **ISO 22301** – Management de la continuité d’activité (PRA/PCA)  
+13. **COSO ERM** – Enterprise Risk Management  
+
+### 4️⃣ Sécurité et Conformité
+14. **ISO 27001** – Système de management de la sécurité de l’information  
+15. **ISO 27005** – Gestion des risques liés à la sécurité SI  
+16. **NIST Cybersecurity Framework** – Cadre sécurité et cyber-risques  
+17. **PCI DSS** – Sécurité des paiements électroniques  
+18. **ISO 27701** – Management de la protection de la vie privée (privacy)  
+
+### 5️⃣ Qualité et Amélioration Continue
+19. **ISO 9001** – Management de la qualité  
+20. **CMMI (Capability Maturity Model Integration)** – Maturité des processus SI  
+21. **Lean IT / Six Sigma** – Optimisation des processus IT et qualité  
+
+---
+
+**Notes / REX :**  
+* La combinaison ISO 27001 + ISO 22301 + ISO 31000 couvre sécurité, continuité et risques stratégiques.  
+* COBIT + TOGAF + ITIL assurent gouvernance, urbanisation et management opérationnel.  
+* PMP/PRINCE2/Agile/SAFe permettent un contrôle efficace des projets complexes dans un contexte multi-métiers (eau, électricité, smart meters, USSD).  
+
+
 ## 🔍 Top 10 REX (Retours d’Expérience)
 
 1. Crash facturation faute de dimensionnement → coupures massives.  
