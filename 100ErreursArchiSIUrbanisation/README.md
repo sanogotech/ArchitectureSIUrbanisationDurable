@@ -1,4 +1,4 @@
-# 💻 150 Erreurs Fatales à Éviter en Urbanisation & Architecture SI
+# 💻 200 Erreurs Fatales à Éviter en Urbanisation & Architecture SI
 ## Cas d’un grand groupe de distribution d’eau et d’électricité en Afrique
 
 Un SI, c’est comme une maison : mal conçu, il devient invivable.  
@@ -193,3 +193,58 @@ Voici **150 erreurs fatales** pour une DSI avec un département Architecture & U
 148. Ignorer privacy by design → non-conformité RGPD/loi locale.  
 149. Sous-estimer RPA → vulnérabilités processus automatisés.  
 150. Ignorer métriques sécurité & qualité innovation → décisions aveugles.
+
+
+## 🎁 50 Erreurs Bonus Critiques (151–200)
+
+151. Ne pas anticiper adoption IoT dans zones rurales → pertes opérationnelles.  
+152. Ignorer résilience réseau électrique → indisponibilité services numériques.  
+153. Sous-estimer impact latence IoT → décisions retardées.  
+154. Pas de gouvernance des modèles IA → biais décisionnels.  
+155. Ignorer qualité données Big Data → analyses erronées.  
+156. Pas de plan de formation continue Tech Leads → perte compétences clés.  
+157. Ignorer gestion innovation & R&D → stagnation.  
+158. Absence pilotage KPI transformation digitale → projets sans valeur.  
+159. Ne pas intégrer CVATL dans MVP → dérives techniques.  
+160. Ignorer conformité réglementaire IA → sanctions légales.  
+161. Sous-estimer dépendances fournisseurs cloud → verrouillage technologique.  
+162. Pas de gestion unifiée du shadow IT → risques sécuritaires.  
+163. Ignorer adoption mobile workforce → perte productivité terrain.  
+164. Sous-estimer sécurité OT/IoT → attaque critique sur réseau.  
+165. Ignorer DevSecOps dans pipeline CI/CD → vulnérabilités persistantes.  
+166. Pas de plan de reprise après sinistre multi-sites → indisponibilité totale.  
+167. Ne pas intégrer analytics en temps réel → décisions tardives.  
+168. Ignorer gouvernance API externe → risque fuite données partenaires.  
+169. Pas de stratégie multi-cloud → complexité et coûts élevés.  
+170. Sous-estimer besoin d’industrialisation des pipelines IA → erreurs récurrentes.  
+171. Ignorer cybersécurité des MVP → prototypes piratés.  
+172. Absence de KPI adoption utilisateurs → projets non utilisés.  
+173. Ne pas anticiper scalabilité RPA → surcharge processus critiques.  
+174. Ignorer gestion licences open source → risques légaux.  
+175. Pas de plan pour montée en charge Big Data → saturation SI.  
+176. Sous-estimer complexité intégration smart meters → données perdues.  
+177. Ignorer collaboration inter-départements SI/métier → initiatives isolées.  
+178. Ne pas prévoir roadmap innovation continue → retard face concurrents.  
+179. Absence d’audit sécurité régulier → vulnérabilités persistantes.  
+180. Ignorer éthique et biais IA → décisions injustes.  
+181. Ne pas protéger pipelines données sensibles → fuite massive.  
+182. Sous-estimer risque turnover middle management → perte capital humain.  
+183. Ignorer urbanisation microservices → fragmentation SI.  
+184. Pas de culture DevOps dans équipes → lenteurs déploiement.  
+185. Ignorer sécurité endpoints agents terrain → compromissions.  
+186. Ne pas prévoir plan communication digitale → adoption faible.  
+187. Sous-estimer dépendance applications tierces → blocage SI.  
+188. Ignorer gouvernance modèle prédictif → décisions incorrectes.  
+189. Absence politique versioning pour IA → reproductions impossibles.  
+190. Ignorer sécurité data lake → exfiltration massive.  
+191. Pas de KPI efficacité RPA → automatisations inefficaces.  
+192. Sous-estimer nécessité tests sécurité intégration → bugs critiques.  
+193. Ignorer formation continue cybersécurité → incidents humains.  
+194. Absence mentoring Tech Leads → perte compétences critiques.  
+195. Ne pas gérer dépendances inter-projets → conflits et doublons.  
+196. Ignorer roadmap MVP produit → gaspillage ressources.  
+197. Pas de plan innovation ouverte → opportunités manquées.  
+198. Sous-estimer impact turnover développeurs seniors → perte savoir-faire.  
+199. Ignorer gouvernance cloud hybride → coûts et complexité.  
+200. Ne pas capitaliser retour expérience REX → répétition erreurs critiques.  
+
