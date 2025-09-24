@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portail Urbanisation SI & Audit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --strategie: #2c3e50;
+            --metier: #27ae60;
+            --application: #e67e22;
+            --donnees: #8e44ad;
+            --infra: #7f8c8d;
+            --accent: #3498db;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .pyramid-container {
+            perspective: 1000px;
+            margin: 50px auto;
+            max-width: 800px;
+        }
+        
+        .pyramid {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            transition: transform 1s;
+        }
+        
+        .pyramid-layer {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform-origin: bottom;
+        }
+        
+        .layer-strategie {
+            height: 80px;
+            background: var(--strategie);
+            transform: translateY(-200px);
+            z-index: 5;
+        }
+        
+        .layer-metier {
+            height: 80px;
+            background: var(--metier);
+            transform: translateY(-100px) scale(0.9);
+            z-index: 4;
+        }
+        
+        .layer-application {
+            height: 80px;
+            background: var(--application);
+            transform: translateY(0) scale(0.8);
+            z-index: 3;
+        }
+        
+        .layer-donnees {
+            height: 80px;
+            background: var(--donnees);
+            transform: translateY(100px) scale(0.7);
+            z-index: 2;
+        }
+        
+        .layer-infra {
+            height: 80px;
+            background: var(--infra);
+            transform: translateY(200px) scale(0.6);
+            z-index: 1;
+        }
+        
+        .pyramid-layer:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+        
+        .layer-active {
+            transform: scale(1.1) !important;
+            z-index: 10;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .module-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        
+        .audit-criteria {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .criteria-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+        }
+        
+        .maturity-scale {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        
+        .maturity-level {
+            text-align: center;
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 0 5px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .maturity-level:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .maturity-level.active {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .glossary-term {
+            background: white;
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        footer {
+            background: var(--strategie);
+            color: white;
+            padding: 40px 0;
+            margin-top: 50px;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+        }
+        
+        .btn-portal {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-portal:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tooltip-content {
+            display: none;
+            position: absolute;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            max-width: 300px;
+        }
+        
+        @media (max-width: 768px) {
+            .pyramid {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .layer-strategie {
+                transform: translateY(-150px);
+            }
+            
+            .layer-metier {
+                transform: translateY(-75px) scale(0.9);
+            }
+            
+            .layer-application {
+                transform: translateY(0) scale(0.8);
+            }
+            
+            .layer-donnees {
+                transform: translateY(75px) scale(0.7);
+            }
+            
+            .layer-infra {
+                transform: translateY(150px) scale(0.6);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-sitemap me-2"></i>Portail Urbanisation SI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#accueil">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pyramide">Pyramide SI</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#modules">Modules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#audit">Audit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#glossaire">Glossaire</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="accueil" class="hero-section">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">Portail Urbanisation SI & Audit</h1>
+            <p class="lead mb-4">Visualisez, comprenez et optimisez votre système d'information grâce à notre portail interactif</p>
+            <a href="#pyramide" class="btn btn-light btn-lg px-4">Découvrir la pyramide SI</a>
+        </div>
+    </section>
+
+    <!-- Pyramide Interactive -->
+    <section id="pyramide" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Pyramide d'Urbanisation SI Interactive</h2>
+            <p class="text-center mb-5">Cliquez sur chaque couche pour explorer les détails du système d'information</p>
+            
+            <div class="pyramid-container">
+                <div class="pyramid">
+                    <div class="pyramid-layer layer-strategie" data-layer="strategie">
+                        <span>Stratégie IT 🏛️</span>
+                        <div class="tooltip-content">
+                            <h6>Stratégie IT</h6>
+                            <p>Vision, alignement avec objectifs métiers, plan directeur SI.</p>
+                        </div>
+                    </div>
+                    <div class="pyramid-layer layer-metier" data-layer="metier">
+                        <span>Métiers & Processus 💼</span>
+                        <div class="tooltip-content">
+                            <h6>Métiers & Processus</h6>
+                            <p>Processus de gestion (distribution eau/électricité, facturation, maintenance).</p>
+                        </div>
+                    </div>
+                    <div class="pyramid-layer layer-application" data-layer="application">
+                        <span>Applications 📱</span>
+                        <div class="tooltip-content">
+                            <h6>Applications</h6>
+                            <p>ERP, CRM, Billing, IoT Hub, API Manager, etc.</p>
+                        </div>
+                    </div>
+                    <div class="pyramid-layer layer-donnees" data-layer="donnees">
+                        <span>Données & Information 📊</span>
+                        <div class="tooltip-content">
+                            <h6>Données & Information</h6>
+                            <p>MDM, DataLake, Reporting, qualité et gouvernance des données.</p>
+                        </div>
+                    </div>
+                    <div class="pyramid-layer layer-infra" data-layer="infra">
+                        <span>Infrastructure & Sécurité 🖥️🔒</span>
+                        <div class="tooltip-content">
+                            <h6>Infrastructure & Sécurité</h6>
+                            <p>Réseaux, serveurs, cloud hybride, IAM, cybersécurité.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-md-8 mx-auto">
+                    <div id="layer-details" class="text-center p-4 bg-white rounded shadow">
+                        <h4 id="layer-title">Sélectionnez une couche de la pyramide</h4>
+                        <p id="layer-description">Cliquez sur l'une des couches pour afficher les détails</p>
+                        <div id="layer-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules du Portail -->
+    <section id="modules" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Modules du Portail</h2>
+            <p class="text-center mb-5">Découvrez les différentes fonctionnalités de notre portail</p>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="module-card p-4 text-center">
+                        <div class="module-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <h4>Urbanisation SI</h4>
+                        <p>Définitions & principes (urbanisation, alignement stratégique, modularité). Présentation des 5 couches avec exemples.</p>
+                        <a href="#" class="btn btn-portal">Explorer</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="module-card p-4 text-center">
+                        <div class="module-icon">
+                            <i class="fas fa-map"></i>
+                        </div>
+                        <h4>Cartographie SI</h4>
+                        <p>Présentation visuelle du portefeuille applicatif. Regroupement par domaines métiers avec diagrammes interactifs.</p>
+                        <a href="#" class="btn btn-portal">Explorer</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="module-card p-4 text-center">
+                        <div class="module-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h4>Architecture SI</h4>
+                        <p>Déclinaison en architectures métier, applicative, données, technique et sécurité selon les normes TOGAF, Zachman.</p>
+                        <a href="#" class="btn btn-portal">Explorer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audit & Recommandations -->
+    <section id="audit" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Audit & Recommandations</h2>
+            <p class="text-center mb-5">Évaluez la maturité de votre système d'information et obtenez des recommandations personnalisées</p>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Échelle de maturité</h4>
+                    <div class="maturity-scale">
+                        <div class="maturity-level" data-level="1">
+                            <div>1</div>
+                            <small>Faible</small>
+                        </div>
+                        <div class="maturity-level" data-level="2">
+                            <div>2</div>
+                            <small>Émergent</small>
+                        </div>
+                        <div class="maturity-level" data-level="3">
+                            <div>3</div>
+                            <small>Standardisé</small>
+                        </div>
+                        <div class="maturity-level" data-level="4">
+                            <div>4</div>
+                            <small>Géré</small>
+                        </div>
+                        <div class="maturity-level" data-level="5">
+                            <div>5</div>
+                            <small>Optimisé</small>
+                        </div>
+                    </div>
+                    
+                    <h4 class="mt-4">Critères d'audit (15 indicateurs)</h4>
+                    <div class="audit-scroll" style="max-height: 400px; overflow-y: auto;">
+                        <div class="audit-criteria">
+                            <span class="criteria-number">1</span>
+                            <strong>Nombre d'applications</strong>
+                            <p>Évaluation du nombre et de la diversité des applications dans le SI.</p>
+                        </div>
+                        <div class="audit-criteria">
+                            <span class="criteria-number">2</span>
+                            <strong>Niveau d'intégration</strong>
+                            <p>API, ESB, orchestration des services.</p>
+                        </div>
+                        <div class="audit-criteria">
+                            <span class="criteria-number">3</span>
+                            <strong>Gouvernance SI & comités</strong>
+                            <p>Existence et efficacité des instances de gouvernance.</p>
+                        </div>
+                        <!-- Ajouter les autres critères ici -->
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="bg-light p-4 rounded">
+                        <h4>Simulateur d'audit</h4>
+                        <form id="audit-form">
+                            <div class="mb-3">
+                                <label for="entity-name" class="form-label">Nom de l'entité</label>
+                                <input type="text" class="form-control" id="entity-name" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Nombre d'applications</label>
+                                <select class="form-select" id="criteria-1">
+                                    <option value="1">Moins de 10</option>
+                                    <option value="2">10-30</option>
+                                    <option value="3">30-100</option>
+                                    <option value="4">100-300</option>
+                                    <option value="5">Plus de 300</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Niveau d'intégration</label>
+                                <select class="form-select" id="criteria-2">
+                                    <option value="1">Faible (peu d'intégrations)</option>
+                                    <option value="2">Émergent (quelques API)</option>
+                                    <option value="3">Standardisé (ESB basique)</option>
+                                    <option value="4">Avancé (orchestration partielle)</option>
+                                    <option value="5">Optimisé (microservices, API management)</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-portal w-100">Générer le rapport d'audit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Glossaire -->
+    <section id="glossaire" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Glossaire & Normes</h2>
+            <p class="text-center mb-5">Définitions des termes clés et référentiels utilisés</p>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="glossary-term">
+                        <h5>Urbanisation SI</h5>
+                        <p>Organisation du SI en couches cohérentes et modulaires pour une meilleure gouvernance et évolutivité.</p>
+                    </div>
+                    <div class="glossary-term">
+                        <h5>Cartographie SI</h5>
+                        <p>Représentation visuelle du système d'information, de ses composants et de leurs interrelations.</p>
+                    </div>
+                    <div class="glossary-term">
+                        <h5>Architecture SI</h5>
+                        <p>Modèles décrivant la structure et les interactions du système d'information.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="glossary-term">
+                        <h5>Gouvernance SI</h5>
+                        <p>Cadre décisionnel pour aligner le SI avec les objectifs stratégiques de l'organisation.</p>
+                    </div>
+                    <div class="glossary-term">
+                        <h5>Maturité SI</h5>
+                        <p>Capacité du SI à être agile, sécurisé et évolutif pour répondre aux besoins métiers.</p>
+                    </div>
+                    <div class="glossary-term">
+                        <h5>TOGAF</h5>
+                        <p>The Open Group Architecture Framework - Méthodologie de conception et de gestion de l'architecture d'entreprise.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <h3>Portail Urbanisation SI & Audit</h3>
+            <p>Un outil complet pour visualiser, comprendre et optimiser votre système d'information</p>
+            <p>© 2023 - Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Gestion de la pyramide interactive
+        document.addEventListener('DOMContentLoaded', function() {
+            const pyramidLayers = document.querySelectorAll('.pyramid-layer');
+            const layerTitle = document.getElementById('layer-title');
+            const layerDescription = document.getElementById('layer-description');
+            const layerContent = document.getElementById('layer-content');
+            
+            // Données pour chaque couche
+            const layerData = {
+                strategie: {
+                    title: "Stratégie IT 🏛️",
+                    description: "Vision, alignement avec objectifs métiers, plan directeur SI.",
+                    content: "<ul><li>Plan directeur SI</li><li>Alignement stratégique</li><li>Feuille de route technologique</li><li>Gouvernance IT</li></ul>"
+                },
+                metier: {
+                    title: "Métiers & Processus 💼",
+                    description: "Processus de gestion (distribution eau/électricité, facturation, maintenance).",
+                    content: "<ul><li>Gestion des clients</li><li>Facturation et recouvrement</li><li>Maintenance des réseaux</li><li>Gestion des incidents</li></ul>"
+                },
+                application: {
+                    title: "Applications 📱",
+                    description: "ERP, CRM, Billing, IoT Hub, API Manager, etc.",
+                    content: "<ul><li>ERP (SAP)</li><li>CRM (Salesforce)</li><li>Plateforme IoT</li><li>Gestionnaire d'API</li></ul>"
+                },
+                donnees: {
+                    title: "Données & Information 📊",
+                    description: "MDM, DataLake, Reporting, qualité et gouvernance des données.",
+                    content: "<ul><li>Master Data Management</li><li>Data Lake</li><li>Reporting et BI</li><li>Qualité des données</li></ul>"
+                },
+                infra: {
+                    title: "Infrastructure & Sécurité 🖥️🔒",
+                    description: "Réseaux, serveurs, cloud hybride, IAM, cybersécurité.",
+                    content: "<ul><li>Réseaux et télécoms</li><li>Centres de données</li><li>Cloud hybride</li><li>Sécurité et conformité</li></ul>"
+                }
+            };
+            
+            // Gestion des clics sur les couches
+            pyramidLayers.forEach(layer => {
+                layer.addEventListener('click', function() {
+                    const layerType = this.getAttribute('data-layer');
+                    
+                    // Retirer la classe active de toutes les couches
+                    pyramidLayers.forEach(l => l.classList.remove('layer-active'));
+                    
+                    // Ajouter la classe active à la couche cliquée
+                    this.classList.add('layer-active');
+                    
+                    // Mettre à jour les détails de la couche
+                    const data = layerData[layerType];
+                    layerTitle.textContent = data.title;
+                    layerDescription.textContent = data.description;
+                    layerContent.innerHTML = data.content;
+                });
+                
+                // Gestion du survol pour l'infobulle
+                layer.addEventListener('mouseenter', function() {
+                    const tooltip = this.querySelector('.tooltip-content');
+                    tooltip.style.display = 'block';
+                });
+                
+                layer.addEventListener('mouseleave', function() {
+                    const tooltip = this.querySelector('.tooltip-content');
+                    tooltip.style.display = 'none';
+                });
+            });
+            
+            // Gestion de l'échelle de maturité
+            const maturityLevels = document.querySelectorAll('.maturity-level');
+            maturityLevels.forEach(level => {
+                level.addEventListener('click', function() {
+                    maturityLevels.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Gestion du formulaire d'audit
+            const auditForm = document.getElementById('audit-form');
+            auditForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Rapport d\'audit généré avec succès! Un PDF va être téléchargé.');
+                // Ici, on pourrait ajouter la logique pour générer un vrai rapport
+            });
+            
+            // Animation au défilement
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observer les éléments à animer
+            const elementsToAnimate = document.querySelectorAll('.module-card, .pyramid-container, .audit-criteria, .glossary-term');
+            elementsToAnimate.forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
